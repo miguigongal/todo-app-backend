@@ -1,0 +1,40 @@
+package com.miguigongal.todo_app_backend.model.services;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.miguigongal.todo_app_backend.model.domain.User;
+import com.miguigongal.todo_app_backend.model.domain.UserDao;
+import com.miguigongal.todo_app_backend.model.exceptions.InstanceNotFoundException;
+
+@Service
+@Transactional(readOnly = true)
+public class PermissionCheckerImpl implements PermissionChecker {
+    
+    @Autowired
+    private UserDao userDao;
+
+    @Override
+    public void checkUserExists(Long userId) throws InstanceNotFoundException {
+
+        if (!userDao.existsById(userId)) {
+            throw new InstanceNotFoundException("usuario", userId);
+        }
+
+    }
+
+    @Override
+    public User checkUser(Long userId) throws InstanceNotFoundException {
+
+        Optional<User> user = userDao.findById(userId);
+
+        if (!user.isPresent()) {
+            throw new InstanceNotFoundException("usuario", userId);
+        }
+
+        return user.get();
+    }
+}
