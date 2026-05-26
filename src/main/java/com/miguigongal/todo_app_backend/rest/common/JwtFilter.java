@@ -1,10 +1,13 @@
 package com.miguigongal.todo_app_backend.rest.common;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import jakarta.servlet.FilterChain;
@@ -42,7 +45,7 @@ public class JwtFilter extends HttpFilter {
 			request.setAttribute("serviceToken", serviceToken);
 			request.setAttribute("userId", jwtInfo.getUserId());
 			
-			configureSecurityContext(jwtInfo.getUserName());
+			configureSecurityContext(jwtInfo.getUserName(), jwtInfo.getRole());
 			
 		} catch (Exception e) {
 			 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -53,10 +56,14 @@ public class JwtFilter extends HttpFilter {
 		
 	}
 	
-	private void configureSecurityContext(String userName) {
+	private void configureSecurityContext(String userName, String role) {
+
+		Set<GrantedAuthority> authorities = new HashSet<>();
+
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
 		
 		SecurityContextHolder.getContext().setAuthentication(
-			new UsernamePasswordAuthenticationToken(userName, null,List.of()));
+			new UsernamePasswordAuthenticationToken(userName, null, authorities));
 		
 	}
 

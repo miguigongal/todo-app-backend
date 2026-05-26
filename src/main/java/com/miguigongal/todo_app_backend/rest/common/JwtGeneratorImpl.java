@@ -24,6 +24,7 @@ public class JwtGeneratorImpl implements JwtGenerator {
 
 		return Jwts.builder()
 			.claim("userId", info.getUserId())
+			.claim("role", info.getRole())
 			.setExpiration(new Date(System.currentTimeMillis() + expirationMinutes*60*1000))
 			.signWith(Keys.hmacShaKeyFor(signKey.getBytes()), SignatureAlgorithm.HS256)
 			.compact();
@@ -41,8 +42,8 @@ public class JwtGeneratorImpl implements JwtGenerator {
 		
 		return new JwtInfo(
 			((Integer) claims.get("userId")).longValue(), 
-			claims.getSubject()
-        );
+			claims.getSubject(),
+			(String) claims.get("role"));
 		
 	}
 

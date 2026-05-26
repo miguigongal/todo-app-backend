@@ -32,9 +32,9 @@ public class SecurityConfig {
 			.authorizeHttpRequests((authorize) -> authorize
 				.requestMatchers(HttpMethod.POST, "/users/signUp").permitAll()
 				.requestMatchers(HttpMethod.POST, "/users/login").permitAll()
-				.requestMatchers(HttpMethod.POST, "/users/loginFromServiceToken").permitAll()
-				.requestMatchers(HttpMethod.PUT, "/users/*").authenticated()
-				.requestMatchers(HttpMethod.POST, "/users/*/changePassword").authenticated()
+				.requestMatchers(HttpMethod.POST, "/users/loginFromServiceToken").hasAnyRole("USER", "ADMIN")
+				.requestMatchers(HttpMethod.PUT, "/users/*").hasAnyRole("USER", "ADMIN")
+				.requestMatchers(HttpMethod.POST, "/users/*/changePassword").hasAnyRole("USER", "ADMIN")
 				.anyRequest().denyAll());
 
 		return http.build();

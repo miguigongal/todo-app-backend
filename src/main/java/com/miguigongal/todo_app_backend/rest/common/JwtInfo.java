@@ -3,10 +3,12 @@ package com.miguigongal.todo_app_backend.rest.common;
 public class JwtInfo {
     private Long userId;
 	private String userName;
+    private String role;
 
-    public JwtInfo(Long userId, String userName) {
+    public JwtInfo(Long userId, String userName, String role) {
         this.userId = userId;
         this.userName = userName;
+        this.role = role;
     }
 
     public Long getUserId() {
@@ -24,5 +26,13 @@ public class JwtInfo {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-     
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    
 }

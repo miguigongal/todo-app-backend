@@ -9,13 +9,17 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
+
 public class User {
+    public enum RoleType {USER, ADMIN};
+
     private Long id;
     private String userName;
     private String password;
     private String firstName;
     private String lastName;
     private String email;
+    private RoleType role;
 
     public User() {}
 
@@ -82,4 +86,13 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public RoleType getRole() {
+        return role;
+    }
+
+    public void setRole(RoleType role) {
+        this.role = role;
+    }
+    
 }
